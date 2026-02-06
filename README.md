@@ -1,36 +1,56 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Jeevan Sai Santosh Baliji - 3D Portfolio
 
-## Getting Started
+Premium 3D portfolio website with interactive monitor display and smooth animations.
 
-First, run the development server:
+## 🚀 Features
+
+- **Interactive 3D Scene** - Click anywhere to zoom into the monitor
+- **Premium Design** - Henry Heffernan-style landing page
+- **Animated Name Badge** - Top-left corner with glowing effects
+- **Responsive** - Works on mobile, tablet, and desktop
+- **Custom Error Pages** - Styled 404 and 500 pages
+- **Full Portfolio** - Integrated HTML template on 3D monitor
+
+## 🛠️ Tech Stack
+
+- **Next.js 14** - React framework
+- **React Three Fiber** - 3D rendering
+- **TypeScript** - Type safety
+- **Tailwind CSS v4** - Styling
+- **GSAP** - Smooth animations
+- **Framer Motion** - UI animations
+- **Zustand** - State management
+
+## 📦 Installation
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Visit `http://localhost:3000`
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🎯 Usage
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Click **START** on the landing page
+2. Click **anywhere** on the screen to zoom into the monitor
+3. View the portfolio on the large monitor screen
+4. Click **"← Back to 3D"** to return to overview
 
-## Learn More
+## 🚀 Deployment
 
-To learn more about Next.js, take a look at the following resources:
+See `deployment_guide.md` for complete deployment instructions.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**Quick Deploy:**
+1. Push to GitHub
+2. Deploy to Vercel (free)
+3. Connect your custom domain
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 👤 Author
 
-## Deploy on Vercel
+**Jeevan Sai Santosh Baliji**  
+Technical Manager | Full Stack Developer | AI Integration Specialist
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📄 License
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Private - All rights reserved
