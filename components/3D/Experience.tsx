@@ -39,8 +39,8 @@ export default function Experience() {
             <Canvas
                 shadows
                 camera={{
-                    position: isMobile ? [0, 5, 15] : [0, 5, 10],  // Further back on mobile
-                    fov: isMobile ? 60 : 45,  // Moderate FOV increase for mobile
+                    position: isMobile ? [0, 6, 14] : [0, 5, 10],  // Morning's working settings
+                    fov: isMobile ? 65 : 45,  // Morning's working FOV
                 }}
                 gl={{
                     antialias: true,
