@@ -69,6 +69,14 @@ canvas {
 @media (max-width: 768px) {
   body {
     font-size: 14px;
+    height: 100dvh;
+    /* Dynamic viewport height for mobile */
+    min-height: 100dvh;
+  }
+
+  .h-screen {
+    height: 100dvh !important;
+    min-height: 100dvh !important;
   }
 
   .glass {
