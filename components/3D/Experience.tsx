@@ -9,6 +9,7 @@ import CameraController from './CameraController'
 import Lights from './Lights'
 import Room from './Room'
 import Computer from './Computer'
+import BackgroundMusic from '../BackgroundMusic'
 
 export default function Experience() {
     const cameraMode = useStore((state) => state.cameraMode)
@@ -39,7 +40,7 @@ export default function Experience() {
                 shadows
                 camera={{
                     position: [0, 5, 10],
-                    fov: isMobile ? 75 : 45,  // Wider FOV for mobile portrait
+                    fov: isMobile ? 85 : 45,  // Much wider FOV for mobile portrait
                 }}
                 gl={{
                     antialias: true,
