@@ -1,18 +1,29 @@
 'use client'
 
-import { Suspense, useCallback } from 'react'
+import { Suspense, useCallback, useState, useEffect } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls, Environment } from '@react-three/drei'
+import { AnimatePresence, motion } from 'framer-motion'
 import { useStore } from '@/store/useStore'
+import CameraController from './CameraController'
+import Lights from './Lights'
 import Room from './Room'
 import Computer from './Computer'
-import Lights from './Lights'
-import CameraController from './CameraController'
-import { motion, AnimatePresence } from 'framer-motion'
 
 export default function Experience() {
     const cameraMode = useStore((state) => state.cameraMode)
     const setCameraMode = useStore((state) => state.setCameraMode)
+    const [isMobile, setIsMobile] = useState(false)
+
+    // Detect mobile devices
+    useEffect(() => {
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth < 768)
+        }
+        checkMobile()
+        window.addEventListener('resize', checkMobile)
+        return () => window.removeEventListener('resize', checkMobile)
+    }, [])
 
     // Handle click to enter portfolio - fixed to prevent crashes
     const handleCanvasClick = useCallback(() => {
@@ -28,7 +39,7 @@ export default function Experience() {
                 shadows
                 camera={{
                     position: [0, 5, 10],
-                    fov: 45,
+                    fov: isMobile ? 75 : 45,  // Wider FOV for mobile portrait
                 }}
                 gl={{
                     antialias: true,
