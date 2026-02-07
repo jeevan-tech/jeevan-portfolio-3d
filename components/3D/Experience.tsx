@@ -165,6 +165,9 @@ export default function Experience() {
                     Loading 3D Experience...
                 </motion.div>
             </div>
+
+            {/* Background Music */}
+            <BackgroundMusic />
         </div>
     )
 }
