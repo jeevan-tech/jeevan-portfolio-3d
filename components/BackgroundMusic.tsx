@@ -12,6 +12,11 @@ export default function BackgroundMusic() {
         // Set volume via JavaScript
         if (audioRef.current) {
             audioRef.current.volume = 0.15
+
+            // Handle audio load error
+            audioRef.current.onerror = () => {
+                console.warn('Background music file not found. Please add an MP3 file to /public/music/background.mp3')
+            }
         }
 
         // Global function to start music (called after user interaction)
@@ -20,6 +25,7 @@ export default function BackgroundMusic() {
                 if (audioRef.current && !isPlaying) {
                     audioRef.current.play().catch(err => {
                         console.log('Audio play failed:', err)
+                        console.log('Tip: Add an MP3 file to /public/music/background.mp3')
                     })
                     setIsPlaying(true)
                 }

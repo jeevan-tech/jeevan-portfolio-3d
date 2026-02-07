@@ -40,7 +40,7 @@ export default function Experience() {
                 shadows
                 camera={{
                     position: [0, 5, 10],
-                    fov: isMobile ? 85 : 45,  // Much wider FOV for mobile portrait
+                    fov: isMobile ? 95 : 45,  // Very wide FOV for mobile portrait full screen
                 }}
                 gl={{
                     antialias: true,
@@ -48,7 +48,13 @@ export default function Experience() {
                     powerPreference: 'high-performance',
                 }}
                 dpr={[1, 2]} // Responsive pixel ratio
-                onClick={handleCanvasClick}
+                onClick={(e) => {
+                    handleCanvasClick()
+                    // Start music on first click
+                    if (typeof window !== 'undefined' && (window as any).startBackgroundMusic) {
+                        (window as any).startBackgroundMusic()
+                    }
+                }}
                 style={{ cursor: cameraMode === 'overview' ? 'pointer' : 'default' }}
             >
                 <color attach="background" args={['#0a0a0a']} />
