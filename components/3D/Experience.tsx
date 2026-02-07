@@ -39,8 +39,8 @@ export default function Experience() {
             <Canvas
                 shadows
                 camera={{
-                    position: [0, 5, 10],
-                    fov: isMobile ? 95 : 45,  // Very wide FOV for mobile portrait full screen
+                    position: isMobile ? [0, 5, 15] : [0, 5, 10],  // Further back on mobile
+                    fov: isMobile ? 60 : 45,  // Moderate FOV increase for mobile
                 }}
                 gl={{
                     antialias: true,
