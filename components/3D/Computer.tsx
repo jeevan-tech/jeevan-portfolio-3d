@@ -195,22 +195,17 @@ export default function Computer() {
                 />
             </mesh>
 
-            {/* Embedded HTML Portfolio - Responsive positioning */}
+            {/* Embedded HTML Portfolio - Dynamic viewport-based positioning */}
             <Html
                 transform
-                distanceFactor={isMobile ? 0.65 : 0.56}
-                position={isMobile ? [0, 0.70, 0.01] : [0, 0.95, 0.012]}
+                distanceFactor={htmlDistance}
+                position={htmlPosition}
                 style={{
                     width: '1600px',
                     height: '900px',
                     borderRadius: '4px',
                     overflow: 'hidden',
                     pointerEvents: cameraMode === 'focused' ? 'auto' : 'none',
-                }}
-                onPointerOver={() => {
-                    // Debug log when Html element is interacted with
-                    console.log('🖱️ Html element - Device:', isMobile ? 'MOBILE' : 'DESKTOP',
-                        'Position:', isMobile ? '[0, 0.70, 0.01]' : '[0, 0.95, 0.012]')
                 }}
             >
                 {cameraMode === 'focused' ? (
@@ -242,6 +237,55 @@ export default function Computer() {
                     </div>
                 )}
             </Html>
+
+            {/* Debug / Calibration UI - Mobile Only */}
+            {isMobile && (
+                <Html fullscreen style={{ pointerEvents: 'none', zIndex: 999 }}>
+                    <div style={{
+                        position: 'fixed',
+                        bottom: '20px',
+                        left: '20px',
+                        background: 'rgba(0,0,0,0.85)',
+                        padding: '12px',
+                        borderRadius: '8px',
+                        border: '1px solid #333',
+                        color: '#00ff00',
+                        fontFamily: 'monospace',
+                        fontSize: '12px',
+                        pointerEvents: 'auto',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '8px',
+                        width: '140px'
+                    }}>
+                        <div style={{ fontWeight: 'bold', borderBottom: '1px solid #555', paddingBottom: '4px' }}>
+                            CALIBRATION
+                        </div>
+
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <span>Y-Pos:</span>
+                            <span>{htmlPosition[1].toFixed(2)}</span>
+                        </div>
+                        <div style={{ display: 'flex', gap: '4px' }}>
+                            <button onClick={() => setHtmlPosition(p => [p[0], p[1] + 0.01, p[2]])} style={{ flex: 1, background: '#333', border: 'none', color: 'white', padding: '4px' }}>+</button>
+                            <button onClick={() => setHtmlPosition(p => [p[0], p[1] - 0.01, p[2]])} style={{ flex: 1, background: '#333', border: 'none', color: 'white', padding: '4px' }}>-</button>
+                        </div>
+
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <span>Scale:</span>
+                            <span>{htmlDistance.toFixed(2)}</span>
+                        </div>
+                        <div style={{ display: 'flex', gap: '4px' }}>
+                            <button onClick={() => setHtmlDistance(d => d + 0.01)} style={{ flex: 1, background: '#333', border: 'none', color: 'white', padding: '4px' }}>+</button>
+                            <button onClick={() => setHtmlDistance(d => d - 0.01)} style={{ flex: 1, background: '#333', border: 'none', color: 'white', padding: '4px' }}>-</button>
+                        </div>
+
+                        <div style={{ fontSize: '10px', color: '#aaa', marginTop: '4px' }}>
+                            Screenshot this values when it looks good!
+                        </div>
+                    </div>
+                </Html>
+            )}
 
             {/* Enhanced screen glow effect */}
             <pointLight
