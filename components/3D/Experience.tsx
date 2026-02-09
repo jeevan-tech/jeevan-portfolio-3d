@@ -2,7 +2,7 @@
 
 import { Suspense, useCallback, useState, useEffect } from 'react'
 import { Canvas } from '@react-three/fiber'
-import { OrbitControls, Environment } from '@react-three/drei'
+import { OrbitControls, Environment, ContactShadows } from '@react-three/drei'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useStore } from '@/store/useStore'
 import CameraController from './CameraController'
@@ -69,6 +69,7 @@ export default function Experience() {
                 <Suspense fallback={null}>
                     <Room />
                     <Computer />
+                    <ContactShadows position={[0, 0.01, 0]} opacity={0.4} scale={20} blur={2} far={4.5} />
                 </Suspense>
 
                 {/* Environment */}
