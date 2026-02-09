@@ -17,74 +17,31 @@ export default function Room() {
     return (
         <group ref={groupRef}>
             {/* Floor with premium gradient */}
+            {/* Floor with reflection - transparent to show rain? No, desk needs floor */}
+            {/* Keeping floor but making it slightly transparent for cool effect */}
             <mesh
                 rotation={[-Math.PI / 2, 0, 0]}
                 position={[0, 0, 0]}
                 receiveShadow
             >
-                <planeGeometry args={[25, 25]} />
+                <planeGeometry args={[50, 50]} />
                 <meshStandardMaterial
-                    color="#0f0f1e"
-                    roughness={0.7}
-                    metalness={0.3}
-                />
-            </mesh>
-
-            {/* Floor accent lights */}
-            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.01, 0]}>
-                <circleGeometry args={[3, 64]} />
-                <meshStandardMaterial
-                    color="#1a1a2e"
-                    emissive="#4f46e5"
-                    emissiveIntensity={0.1}
+                    color="#050510"
+                    roughness={0.4}
+                    metalness={0.6}
                     transparent
-                    opacity={0.3}
+                    opacity={0.8}
                 />
             </mesh>
 
             {/* Back Wall with gradient effect */}
-            <mesh position={[0, 5, -6]} receiveShadow>
-                <planeGeometry args={[25, 10]} />
-                <meshStandardMaterial
-                    color="#0a0a1e"
-                    roughness={0.9}
-                    emissive="#1e1b4b"
-                    emissiveIntensity={0.05}
-                />
-            </mesh>
-
-            {/* Left Wall */}
-            <mesh position={[-12, 5, 5]} rotation={[0, Math.PI / 2, 0]} receiveShadow>
-                <planeGeometry args={[25, 10]} />
-                <meshStandardMaterial
-                    color="#0a0a1e"
-                    roughness={0.9}
-                    emissive="#581c87"
-                    emissiveIntensity={0.03}
-                />
-            </mesh>
-
-            {/* Right Wall */}
-            <mesh position={[12, 5, 5]} rotation={[0, -Math.PI / 2, 0]} receiveShadow>
-                <planeGeometry args={[25, 10]} />
-                <meshStandardMaterial
-                    color="#0a0a1e"
-                    roughness={0.9}
-                    emissive="#0c4a6e"
-                    emissiveIntensity={0.03}
-                />
-            </mesh>
-
-            {/* Ceiling with ambient glow */}
-            <mesh rotation={[Math.PI / 2, 0, 0]} position={[0, 10, 0]} receiveShadow>
-                <planeGeometry args={[25, 25]} />
-                <meshStandardMaterial
-                    color="#050510"
-                    roughness={1}
-                    emissive="#1e1b4b"
-                    emissiveIntensity={0.02}
-                />
-            </mesh>
+            {/* Walls Removed to show Background Layer */}
+            {/* 
+            <mesh position={[0, 5, -6]} receiveShadow> ... </mesh>
+            <mesh position={[-12, 5, 5]} ...> </mesh>
+            <mesh position={[12, 5, 5]} ...> </mesh>
+            <mesh rotation={[Math.PI / 2, 0, 0]} position={[0, 10, 0]} ...> </mesh>
+            */}
 
             {/* Premium Desk */}
             <group position={[0, 0, 0]}>
