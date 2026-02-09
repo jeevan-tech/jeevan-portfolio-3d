@@ -43,7 +43,7 @@ See `deployment_guide.md` for complete deployment instructions.
 
 **Quick Deploy:**
 1. Push to GitHub
-2. Deploy to Vercel (free)
+2. Deploy<!-- Trigger Vercel Redeploy: Force removal of AntiGravityCanvas -->
 3. Connect your custom domain
 
 ## 👤 Author
