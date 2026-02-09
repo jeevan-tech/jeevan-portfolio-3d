@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import { useThree, useFrame } from '@react-three/fiber'
 import { useStore } from '@/store/useStore'
 import gsap from 'gsap'
@@ -12,8 +12,14 @@ const CAMERA_POSITIONS = {
         target: [0, 0, 0],
     },
     focused: {
-        position: [0, 1.8, 3.5],
-        target: [0, 1.8, 0],
+        desktop: {
+            position: [0, 1.8, 3.5],
+            target: [0, 1.8, 0],
+        },
+        mobile: {
+            position: [0, 1.5, 4.0], // Adjusted for better mobile monitor framing
+            target: [0, 1.5, 0],
+        }
     },
 }
 
@@ -21,9 +27,27 @@ export default function CameraController() {
     const { camera } = useThree()
     const cameraMode = useStore((state) => state.cameraMode)
     const targetRef = useRef([0, 0, 0])
+    const [isMobile, setIsMobile] = useState(false)
 
     useEffect(() => {
-        const config = CAMERA_POSITIONS[cameraMode]
+        // Detect mobile
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth < 768)
+        }
+        checkMobile()
+        window.addEventListener('resize', checkMobile)
+        return () => window.removeEventListener('resize', checkMobile)
+    }, [])
+
+    useEffect(() => {
+        let config
+
+        if (cameraMode === 'overview') {
+            config = CAMERA_POSITIONS.overview
+        } else {
+            // Use mobile-specific camera for focused mode on mobile
+            config = isMobile ? CAMERA_POSITIONS.focused.mobile : CAMERA_POSITIONS.focused.desktop
+        }
 
         // Animate camera position
         gsap.to(camera.position, {
@@ -42,7 +66,7 @@ export default function CameraController() {
             duration: 2,
             ease: 'power2.inOut',
         })
-    }, [cameraMode, camera])
+    }, [cameraMode, camera, isMobile])
 
     // Update camera lookAt on every frame
     useFrame(() => {
