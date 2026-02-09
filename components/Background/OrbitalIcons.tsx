@@ -13,11 +13,16 @@ const icons = [
 const OrbitalIcons = () => {
     const groupRef = useRef<THREE.Group>(null!)
     const [paused, setPaused] = useState(false)
-    const { camera } = useThree()
+    const { camera, viewport } = useThree()
+
+    // Adaptive Scaling
+    const isMobile = viewport.width < 10
+    const radiusScale = isMobile ? 0.6 : 1
+    const iconScale = isMobile ? 0.8 : 1
 
     useFrame((state, delta) => {
         if (!paused && groupRef.current) {
-            groupRef.current.rotation.y += delta * 0.1
+            groupRef.current.rotation.y += delta * 0.05 // Slower rotation
         }
     })
 
@@ -35,9 +40,11 @@ const OrbitalIcons = () => {
             onComplete: () => {
                 // Return to orbit after 2 seconds
                 setTimeout(() => {
+                    // Recalculate original position based on angle and CURRENT radius scale
+                    const originalRadius = ref.current.userData.radius * radiusScale
                     gsap.to(ref.current.position, {
-                        x: Math.sin(ref.current.userData.angle) * ref.current.userData.radius,
-                        z: Math.cos(ref.current.userData.angle) * ref.current.userData.radius,
+                        x: Math.sin(ref.current.userData.angle) * originalRadius,
+                        z: Math.cos(ref.current.userData.angle) * originalRadius,
                         y: 0,
                         duration: 1,
                         onComplete: () => setPaused(false)
@@ -51,8 +58,9 @@ const OrbitalIcons = () => {
         <group ref={groupRef}>
             {icons.map((icon, index) => {
                 const angle = (index / icons.length) * Math.PI * 2
-                const x = Math.sin(angle) * icon.radius
-                const z = Math.cos(angle) * icon.radius
+                // Apply adaptive radius scale
+                const x = Math.sin(angle) * icon.radius * radiusScale
+                const z = Math.cos(angle) * icon.radius * radiusScale
 
                 return (
                     <IconItem
@@ -61,6 +69,7 @@ const OrbitalIcons = () => {
                         position={[x, 0, z]}
                         angle={angle}
                         onClick={handleIconClick}
+                        scale={iconScale}
                     />
                 )
             })}

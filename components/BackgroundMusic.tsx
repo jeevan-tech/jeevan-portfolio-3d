@@ -1,11 +1,12 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { useStore } from '@/store/useStore'
 import { Volume2, VolumeX, Play } from 'lucide-react'
 
 export default function BackgroundMusic() {
     const audioRef = useRef<HTMLAudioElement>(null)
-    const [isMuted, setIsMuted] = useState(true) // Start muted
+    const { isMuted, toggleMute, setIsMuted } = useStore() // Use global state
     const [isPlaying, setIsPlaying] = useState(false)
     const [showPlayPrompt, setShowPlayPrompt] = useState(false)
 
@@ -13,7 +14,7 @@ export default function BackgroundMusic() {
         // Set volume via JavaScript
         if (audioRef.current) {
             audioRef.current.volume = 0.4 // Increased volume
-            audioRef.current.muted = true // Start muted
+            audioRef.current.muted = isMuted // Sync with global state
 
             // Handle audio load error
             audioRef.current.onerror = () => {
@@ -33,7 +34,7 @@ export default function BackgroundMusic() {
             if (audioRef.current && !isPlaying) {
                 audioRef.current.play().then(() => {
                     setIsPlaying(true)
-                    setIsMuted(false)
+                    setIsMuted(false) // Unmute globally
                     setShowPlayPrompt(false)
                     if (audioRef.current) {
                         audioRef.current.muted = false
@@ -52,24 +53,26 @@ export default function BackgroundMusic() {
             clearTimeout(promptTimeout)
             document.removeEventListener('click', handleFirstInteraction)
         }
-    }, [isPlaying])
+    }, [isPlaying, setIsMuted]) // Depend on isMuted only for initial sync? No, just keep isPlaying
 
-    const toggleMute = () => {
+    // Effect to sync audio element with global mute state
+    useEffect(() => {
         if (audioRef.current) {
-            const newMutedState = !isMuted
-            audioRef.current.muted = newMutedState
-            setIsMuted(newMutedState)
-
-            // If unmuting and not playing, try to play
-            if (!newMutedState && !isPlaying) {
+            audioRef.current.muted = isMuted
+            if (!isMuted && !isPlaying) {
+                // Try to play if unmuted via HUD
                 audioRef.current.play().then(() => {
                     setIsPlaying(true)
                     setShowPlayPrompt(false)
-                }).catch(err => {
-                    console.log('Audio play requires user interaction first')
+                }).catch(() => {
+                    // Interaction needed
                 })
             }
         }
+    }, [isMuted, isPlaying])
+
+    const handleToggleMute = () => {
+        toggleMute()
     }
 
     return (
