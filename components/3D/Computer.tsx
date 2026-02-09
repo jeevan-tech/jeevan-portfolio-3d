@@ -121,8 +121,8 @@ export default function Computer() {
             {/* Embedded HTML Portfolio - Responsive positioning */}
             <Html
                 transform
-                distanceFactor={isMobile ? 0.58 : 0.56}
-                position={isMobile ? [0, 0.93, 0.012] : [0, 0.95, 0.012]}
+                distanceFactor={isMobile ? 0.60 : 0.56}
+                position={isMobile ? [0, 0.88, 0.01] : [0, 0.95, 0.012]}
                 style={{
                     width: '1600px',
                     height: '900px',
