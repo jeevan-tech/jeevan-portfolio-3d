@@ -10,6 +10,8 @@ import Lights from './Lights'
 import Room from './Room'
 import Computer from './Computer'
 import BackgroundMusic from '../BackgroundMusic'
+import AntiGravityCanvas from '../AntiGravityCanvas'
+import LoadingOverlay from '../LoadingOverlay'
 
 export default function Experience() {
     const cameraMode = useStore((state) => state.cameraMode)
@@ -171,6 +173,12 @@ export default function Experience() {
                     Loading 3D Experience...
                 </motion.div>
             </div>
+
+            {/* Anti-Gravity Physics Canvas - Behind 3D scene */}
+            <AntiGravityCanvas />
+
+            {/* Loading Overlay */}
+            <LoadingOverlay />
 
             {/* Background Music */}
             <BackgroundMusic />
