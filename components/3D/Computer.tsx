@@ -90,6 +90,7 @@ export default function Computer() {
                 {/* Embedded HTML Portfolio - Universal Parented Alignment */}
                 <Html
                     transform
+                    occlude="blending"
                     distanceFactor={isMobile ? 0.6 : 0.56}
                     position={[0, 0, 0.01]}
                     style={{
@@ -98,7 +99,7 @@ export default function Computer() {
                         borderRadius: '4px',
                         overflow: 'hidden',
                         pointerEvents: cameraMode === 'focused' ? 'auto' : 'none',
-                        border: '4px solid red', // DEBUG: Visible border to verify alignment
+                        // border: '4px solid red', // DEBUG REMOVED
                     }}
                 >
                     {cameraMode === 'focused' ? (

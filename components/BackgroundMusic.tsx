@@ -12,7 +12,7 @@ export default function BackgroundMusic() {
     useEffect(() => {
         // Set volume via JavaScript
         if (audioRef.current) {
-            audioRef.current.volume = 0.15
+            audioRef.current.volume = 0.4 // Increased volume
             audioRef.current.muted = true // Start muted
 
             // Handle audio load error
