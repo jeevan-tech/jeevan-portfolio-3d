@@ -14,12 +14,23 @@ export default function Computer() {
     // Detect mobile devices
     useEffect(() => {
         const checkMobile = () => {
-            setIsMobile(window.innerWidth < 768)
+            const mobile = window.innerWidth < 768
+            setIsMobile(mobile)
+            console.log('🔍 Computer.tsx - Mobile detection:', {
+                isMobile: mobile,
+                windowWidth: window.innerWidth,
+                timestamp: new Date().toLocaleTimeString()
+            })
         }
         checkMobile()
         window.addEventListener('resize', checkMobile)
         return () => window.removeEventListener('resize', checkMobile)
     }, [])
+
+    // Log when mobile state changes
+    useEffect(() => {
+        console.log('📱 Computer.tsx - isMobile state changed to:', isMobile)
+    }, [isMobile])
 
     // Subtle floating animation
     useFrame((state) => {
@@ -121,14 +132,19 @@ export default function Computer() {
             {/* Embedded HTML Portfolio - Responsive positioning */}
             <Html
                 transform
-                distanceFactor={isMobile ? 0.60 : 0.56}
-                position={isMobile ? [0, 0.88, 0.01] : [0, 0.95, 0.012]}
+                distanceFactor={isMobile ? 0.65 : 0.56}
+                position={isMobile ? [0, 0.70, 0.01] : [0, 0.95, 0.012]}
                 style={{
                     width: '1600px',
                     height: '900px',
                     borderRadius: '4px',
                     overflow: 'hidden',
                     pointerEvents: cameraMode === 'focused' ? 'auto' : 'none',
+                }}
+                onPointerOver={() => {
+                    // Debug log when Html element is interacted with
+                    console.log('🖱️ Html element - Device:', isMobile ? 'MOBILE' : 'DESKTOP',
+                        'Position:', isMobile ? '[0, 0.70, 0.01]' : '[0, 0.95, 0.012]')
                 }}
             >
                 {cameraMode === 'focused' ? (
