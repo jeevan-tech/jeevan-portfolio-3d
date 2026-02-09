@@ -98,6 +98,50 @@ export default function Computer() {
                         borderRadius: '4px',
                         overflow: 'hidden',
                         pointerEvents: cameraMode === 'focused' ? 'auto' : 'none',
+                        border: '4px solid red', // DEBUG: Visible border to verify alignment
+                    }}
+                >
+                    {cameraMode === 'focused' ? (
+                        <iframe
+                            src="/portfolio/index.html"
+                            style={{
+                                width: '100%',
+                                height: '100%',
+                                border: 'none',
+                                backgroundColor: '#161616',
+                            }}
+                            title="Jeevan Portfolio"
+                        />
+                    ) : (
+                        <div style={{
+                            width: '100%',
+                            height: '100%',
+                            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            color: 'white',
+                            fontSize: '24px',
+                            fontWeight: 'bold',
+                            textAlign: 'center',
+                            padding: '20px',
+                        }}>
+                            Click to view portfolio
+                        </div>
+                    )}
+                </Html>
+
+                {/* Embedded HTML Portfolio - Universal Parented Alignment */}
+                <Html
+                    transform
+                    distanceFactor={isMobile ? 0.6 : 0.56}
+                    position={[0, 0, 0.01]}
+                    style={{
+                        width: '1600px',
+                        height: '900px',
+                        borderRadius: '4px',
+                        overflow: 'hidden',
+                        pointerEvents: cameraMode === 'focused' ? 'auto' : 'none',
                     }}
                 >
                     {cameraMode === 'focused' ? (
