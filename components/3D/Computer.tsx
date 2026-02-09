@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { Html } from '@react-three/drei'
 import { useStore } from '@/store/useStore'
 import * as THREE from 'three'
@@ -9,6 +9,17 @@ import { useFrame } from '@react-three/fiber'
 export default function Computer() {
     const groupRef = useRef<THREE.Group>(null)
     const cameraMode = useStore((state) => state.cameraMode)
+    const [isMobile, setIsMobile] = useState(false)
+
+    // Detect mobile devices
+    useEffect(() => {
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth < 768)
+        }
+        checkMobile()
+        window.addEventListener('resize', checkMobile)
+        return () => window.removeEventListener('resize', checkMobile)
+    }, [])
 
     // Subtle floating animation
     useFrame((state) => {
@@ -107,11 +118,11 @@ export default function Computer() {
                 />
             </mesh>
 
-            {/* Embedded HTML Portfolio - Your actual portfolio! LARGER SIZE */}
+            {/* Embedded HTML Portfolio - Responsive positioning */}
             <Html
                 transform
-                distanceFactor={0.56}
-                position={[0, 0.95, 0.012]}
+                distanceFactor={isMobile ? 0.58 : 0.56}
+                position={isMobile ? [0, 0.93, 0.012] : [0, 0.95, 0.012]}
                 style={{
                     width: '1600px',
                     height: '900px',
