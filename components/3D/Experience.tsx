@@ -10,8 +10,8 @@ import Lights from './Lights'
 import Room from './Room'
 import Computer from './Computer'
 import BackgroundMusic from '../BackgroundMusic'
-import AntiGravityCanvas from '../AntiGravityCanvas'
 import LoadingOverlay from '../LoadingOverlay'
+import BackgroundLayer from '../BackgroundLayer'
 
 export default function Experience() {
     const cameraMode = useStore((state) => state.cameraMode)
@@ -46,7 +46,7 @@ export default function Experience() {
                 }}
                 gl={{
                     antialias: true,
-                    alpha: false,
+                    alpha: true,
                     powerPreference: 'high-performance',
                 }}
                 dpr={[1, 2]} // Responsive pixel ratio
@@ -59,8 +59,6 @@ export default function Experience() {
                 }}
                 style={{ cursor: cameraMode === 'overview' ? 'pointer' : 'default' }}
             >
-                <color attach="background" args={['#0a0a0a']} />
-
                 {/* Lighting */}
                 <Lights />
 
@@ -174,8 +172,8 @@ export default function Experience() {
                 </motion.div>
             </div>
 
-            {/* Anti-Gravity Physics Canvas - Behind 3D scene */}
-            <AntiGravityCanvas />
+            {/* Background Layer (Binary Rain + Icons + HUD) */}
+            <BackgroundLayer />
 
             {/* Loading Overlay */}
             <LoadingOverlay />
