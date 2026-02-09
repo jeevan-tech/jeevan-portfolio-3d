@@ -13,7 +13,7 @@ export default function Computer() {
     const [htmlPosition, setHtmlPosition] = useState<[number, number, number]>([0, 0.95, 0.012])
     const [htmlDistance, setHtmlDistance] = useState(0.56)
 
-    // Dynamic positioning based on viewport aspect ratio
+    // Dynamic positioning based on viewport aspect ratio for ALL devices
     useEffect(() => {
         const calculatePosition = () => {
             const width = window.innerWidth
@@ -22,10 +22,11 @@ export default function Computer() {
 
             let yPos = 0.95
             let distanceFactor = 0.56
+            let deviceType = 'DESKTOP'
 
-            // Adjust based on aspect ratio (portrait phones have lower aspect ratios)
+            // Mobile phones (portrait)
             if (width < 768) {
-                // Mobile devices
+                deviceType = 'MOBILE'
                 if (aspectRatio < 0.5) {
                     // Very tall phones (iPhone 14 Pro, 13, etc.)
                     yPos = 0.75
@@ -40,13 +41,43 @@ export default function Computer() {
                     distanceFactor = 0.58
                 }
             }
+            // Tablets (portrait and landscape)
+            else if (width >= 768 && width < 1024) {
+                deviceType = 'TABLET'
+                if (aspectRatio < 0.75) {
+                    // Portrait tablets (iPad Pro portrait, etc.)
+                    yPos = 0.88
+                    distanceFactor = 0.57
+                } else {
+                    // Landscape tablets
+                    yPos = 0.92
+                    distanceFactor = 0.56
+                }
+            }
+            // Laptops and desktops
+            else {
+                deviceType = 'DESKTOP'
+                if (aspectRatio < 1.5) {
+                    // Square-ish monitors (4:3, 16:10)
+                    yPos = 0.93
+                    distanceFactor = 0.56
+                } else if (aspectRatio < 1.8) {
+                    // Standard widescreen (16:9)
+                    yPos = 0.95
+                    distanceFactor = 0.56
+                } else {
+                    // Ultrawide monitors (21:9, 32:9)
+                    yPos = 0.96
+                    distanceFactor = 0.55
+                }
+            }
 
             setHtmlPosition([0, yPos, 0.01])
             setHtmlDistance(distanceFactor)
             setIsMobile(width < 768)
 
-            console.log('📱 Dynamic positioning:', {
-                device: width < 768 ? 'MOBILE' : 'DESKTOP',
+            console.log('📱 Universal dynamic positioning:', {
+                deviceType,
                 width,
                 height,
                 aspectRatio: aspectRatio.toFixed(3),
