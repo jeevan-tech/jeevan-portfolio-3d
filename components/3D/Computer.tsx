@@ -10,92 +10,15 @@ export default function Computer() {
     const groupRef = useRef<THREE.Group>(null)
     const cameraMode = useStore((state) => state.cameraMode)
     const [isMobile, setIsMobile] = useState(false)
-    const [htmlPosition, setHtmlPosition] = useState<[number, number, number]>([0, 0.95, 0.012])
-    const [htmlDistance, setHtmlDistance] = useState(0.56)
 
-    // Dynamic positioning based on viewport aspect ratio for ALL devices
+    // Detect mobile devices
     useEffect(() => {
-        const calculatePosition = () => {
-            const width = window.innerWidth
-            const height = window.innerHeight
-            const aspectRatio = width / height
-
-            let yPos = 0.95
-            let distanceFactor = 0.56
-            let deviceType = 'DESKTOP'
-
-            // Mobile phones (portrait)
-            if (width < 768) {
-                deviceType = 'MOBILE'
-                if (aspectRatio < 0.5) {
-                    // Very tall phones (iPhone 14 Pro, 13, etc.)
-                    yPos = 0.75
-                    distanceFactor = 0.62
-                } else if (aspectRatio < 0.55) {
-                    // Standard tall phones (iPhone 12 Mini, etc.)
-                    yPos = 0.78
-                    distanceFactor = 0.60
-                } else {
-                    // Wider phones or landscape
-                    yPos = 0.82
-                    distanceFactor = 0.58
-                }
-            }
-            // Tablets (portrait and landscape)
-            else if (width >= 768 && width < 1024) {
-                deviceType = 'TABLET'
-                if (aspectRatio < 0.75) {
-                    // Portrait tablets (iPad Pro portrait, etc.)
-                    yPos = 0.88
-                    distanceFactor = 0.57
-                } else {
-                    // Landscape tablets
-                    yPos = 0.92
-                    distanceFactor = 0.56
-                }
-            }
-            // Laptops and desktops
-            else {
-                deviceType = 'DESKTOP'
-                if (aspectRatio < 1.5) {
-                    // Square-ish monitors (4:3, 16:10)
-                    yPos = 0.93
-                    distanceFactor = 0.56
-                } else if (aspectRatio < 1.8) {
-                    // Standard widescreen (16:9)
-                    yPos = 0.95
-                    distanceFactor = 0.56
-                } else {
-                    // Ultrawide monitors (21:9, 32:9)
-                    yPos = 0.96
-                    distanceFactor = 0.55
-                }
-            }
-
-            setHtmlPosition([0, yPos, 0.01])
-            setHtmlDistance(distanceFactor)
-            setIsMobile(width < 768)
-
-            console.log('📱 Universal dynamic positioning:', {
-                deviceType,
-                width,
-                height,
-                aspectRatio: aspectRatio.toFixed(3),
-                yPosition: yPos,
-                distanceFactor
-            })
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth < 768)
         }
-
-        calculatePosition()
-        window.addEventListener('resize', calculatePosition)
-        window.addEventListener('orientationchange', () => {
-            setTimeout(calculatePosition, 100)
-        })
-
-        return () => {
-            window.removeEventListener('resize', calculatePosition)
-            window.removeEventListener('orientationchange', calculatePosition)
-        }
+        checkMobile()
+        window.addEventListener('resize', checkMobile)
+        return () => window.removeEventListener('resize', checkMobile)
     }, [])
 
     // Subtle floating animation
@@ -238,97 +161,6 @@ export default function Computer() {
                 />
             </mesh>
 
-            {/* Embedded HTML Portfolio - Dynamic viewport-based positioning */}
-            <Html
-                transform
-                distanceFactor={htmlDistance}
-                position={htmlPosition}
-                style={{
-                    width: '1600px',
-                    height: '900px',
-                    borderRadius: '4px',
-                    overflow: 'hidden',
-                    pointerEvents: cameraMode === 'focused' ? 'auto' : 'none',
-                }}
-            >
-                {cameraMode === 'focused' ? (
-                    <iframe
-                        src="/portfolio/index.html"
-                        style={{
-                            width: '100%',
-                            height: '100%',
-                            border: 'none',
-                            backgroundColor: '#161616',
-                        }}
-                        title="Jeevan Portfolio"
-                    />
-                ) : (
-                    <div style={{
-                        width: '100%',
-                        height: '100%',
-                        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        color: 'white',
-                        fontSize: '24px',
-                        fontWeight: 'bold',
-                        textAlign: 'center',
-                        padding: '20px',
-                    }}>
-                        Click to view portfolio
-                    </div>
-                )}
-            </Html>
-
-            {/* Debug / Calibration UI - Mobile Only */}
-            {isMobile && (
-                <Html fullscreen style={{ pointerEvents: 'none', zIndex: 999 }}>
-                    <div style={{
-                        position: 'fixed',
-                        bottom: '20px',
-                        left: '20px',
-                        background: 'rgba(0,0,0,0.85)',
-                        padding: '12px',
-                        borderRadius: '8px',
-                        border: '1px solid #333',
-                        color: '#00ff00',
-                        fontFamily: 'monospace',
-                        fontSize: '12px',
-                        pointerEvents: 'auto',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: '8px',
-                        width: '140px'
-                    }}>
-                        <div style={{ fontWeight: 'bold', borderBottom: '1px solid #555', paddingBottom: '4px' }}>
-                            CALIBRATION
-                        </div>
-
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <span>Y-Pos:</span>
-                            <span>{htmlPosition[1].toFixed(2)}</span>
-                        </div>
-                        <div style={{ display: 'flex', gap: '4px' }}>
-                            <button onClick={() => setHtmlPosition(p => [p[0], p[1] + 0.01, p[2]])} style={{ flex: 1, background: '#333', border: 'none', color: 'white', padding: '4px' }}>+</button>
-                            <button onClick={() => setHtmlPosition(p => [p[0], p[1] - 0.01, p[2]])} style={{ flex: 1, background: '#333', border: 'none', color: 'white', padding: '4px' }}>-</button>
-                        </div>
-
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <span>Scale:</span>
-                            <span>{htmlDistance.toFixed(2)}</span>
-                        </div>
-                        <div style={{ display: 'flex', gap: '4px' }}>
-                            <button onClick={() => setHtmlDistance(d => d + 0.01)} style={{ flex: 1, background: '#333', border: 'none', color: 'white', padding: '4px' }}>+</button>
-                            <button onClick={() => setHtmlDistance(d => d - 0.01)} style={{ flex: 1, background: '#333', border: 'none', color: 'white', padding: '4px' }}>-</button>
-                        </div>
-
-                        <div style={{ fontSize: '10px', color: '#aaa', marginTop: '4px' }}>
-                            Screenshot this values when it looks good!
-                        </div>
-                    </div>
-                </Html>
-            )}
 
             {/* Enhanced screen glow effect */}
             <pointLight
