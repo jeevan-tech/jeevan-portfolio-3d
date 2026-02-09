@@ -10,27 +10,62 @@ export default function Computer() {
     const groupRef = useRef<THREE.Group>(null)
     const cameraMode = useStore((state) => state.cameraMode)
     const [isMobile, setIsMobile] = useState(false)
+    const [htmlPosition, setHtmlPosition] = useState<[number, number, number]>([0, 0.95, 0.012])
+    const [htmlDistance, setHtmlDistance] = useState(0.56)
 
-    // Detect mobile devices
+    // Dynamic positioning based on viewport aspect ratio
     useEffect(() => {
-        const checkMobile = () => {
-            const mobile = window.innerWidth < 768
-            setIsMobile(mobile)
-            console.log('🔍 Computer.tsx - Mobile detection:', {
-                isMobile: mobile,
-                windowWidth: window.innerWidth,
-                timestamp: new Date().toLocaleTimeString()
+        const calculatePosition = () => {
+            const width = window.innerWidth
+            const height = window.innerHeight
+            const aspectRatio = width / height
+
+            let yPos = 0.95
+            let distanceFactor = 0.56
+
+            // Adjust based on aspect ratio (portrait phones have lower aspect ratios)
+            if (width < 768) {
+                // Mobile devices
+                if (aspectRatio < 0.5) {
+                    // Very tall phones (iPhone 14 Pro, 13, etc.)
+                    yPos = 0.75
+                    distanceFactor = 0.62
+                } else if (aspectRatio < 0.55) {
+                    // Standard tall phones (iPhone 12 Mini, etc.)
+                    yPos = 0.78
+                    distanceFactor = 0.60
+                } else {
+                    // Wider phones or landscape
+                    yPos = 0.82
+                    distanceFactor = 0.58
+                }
+            }
+
+            setHtmlPosition([0, yPos, 0.01])
+            setHtmlDistance(distanceFactor)
+            setIsMobile(width < 768)
+
+            console.log('📱 Dynamic positioning:', {
+                device: width < 768 ? 'MOBILE' : 'DESKTOP',
+                width,
+                height,
+                aspectRatio: aspectRatio.toFixed(3),
+                yPosition: yPos,
+                distanceFactor
             })
         }
-        checkMobile()
-        window.addEventListener('resize', checkMobile)
-        return () => window.removeEventListener('resize', checkMobile)
-    }, [])
 
-    // Log when mobile state changes
-    useEffect(() => {
-        console.log('📱 Computer.tsx - isMobile state changed to:', isMobile)
-    }, [isMobile])
+        calculatePosition()
+        window.addEventListener('resize', calculatePosition)
+        window.addEventListener('orientationchange', () => {
+            setTimeout(calculatePosition, 100)
+        })
+
+        return () => {
+            window.removeEventListener('resize', calculatePosition)
+            window.removeEventListener('orientationchange', calculatePosition)
+        }
+    }, [])
 
     // Subtle floating animation
     useFrame((state) => {
