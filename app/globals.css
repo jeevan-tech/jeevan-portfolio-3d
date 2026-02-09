@@ -90,6 +90,19 @@ canvas {
   body {
     font-size: 15px;
   }
+
+  /* Tablet Portrait Fix - use standard vh */
+  @media (orientation: portrait) {
+    body {
+      height: 100vh !important;
+      min-height: 100vh !important;
+    }
+
+    .h-screen {
+      height: 100vh !important;
+      min-height: 100vh !important;
+    }
+  }
 }
 
 /* Desktop Optimizations */
